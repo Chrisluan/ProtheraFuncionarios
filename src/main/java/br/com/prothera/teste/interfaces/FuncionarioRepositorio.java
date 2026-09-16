@@ -2,9 +2,16 @@ package br.com.prothera.teste.interfaces;
 
 import br.com.prothera.teste.models.Funcionario;
 
+import java.util.ArrayList;
+import java.util.function.Predicate;
+
 public interface FuncionarioRepositorio {
-    public void adicionarFuncionario(Funcionario funcionario);
-    public void removerFuncionario(int id);
-    public Funcionario buscarFuncionario(int id);
+    void adicionarFuncionario(Funcionario funcionario);
+
+    void removerFuncionario(Predicate<Funcionario> filtro);
+
+    Funcionario buscarFuncionario(Predicate<Funcionario> filtro);
+
     void carregarFuncionarios();
+    void persistir();
 }
