@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class Funcionario extends Pessoa{
+public class Funcionario extends Pessoa {
     private int id;
     private BigDecimal salario;
     private String funcao;
@@ -16,20 +16,20 @@ public class Funcionario extends Pessoa{
         return salario;
     }
 
-    public String getFuncao() {
-        return funcao;
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
     }
 
-    public int getId() {
-        return this.id;
+    public String getFuncao() {
+        return funcao;
     }
 
     public void setFuncao(String funcao) {
         this.funcao = funcao;
     }
 
-    public void setSalario(BigDecimal salario) {
-        this.salario = salario;
+    public int getId() {
+        return this.id;
     }
 
     @Override
@@ -37,15 +37,15 @@ public class Funcionario extends Pessoa{
         DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         NumberFormat formatadorMoeda = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
         return String.format(Locale.of("pt", "BR"), """
-                   --------------------------------
-                   |> Pessoa
-                   |     Nome: %s
-                   |     Data de Nascimento: %s
-                   |> Funcionario
-                   |     Função: %s
-                   |     Salario: %s
-                   --------------------------------
-                """,
+                           --------------------------------
+                           |> Pessoa
+                           |     Nome: %s
+                           |     Data de Nascimento: %s
+                           |> Funcionario
+                           |     Função: %s
+                           |     Salario: %s
+                           --------------------------------
+                        """,
                 this.getNome(),
                 formatadorData.format(this.getDataNascimento()),
                 this.getFuncao(),

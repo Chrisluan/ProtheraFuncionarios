@@ -5,7 +5,6 @@ import br.com.prothera.teste.interfaces.FuncionarioService;
 import br.com.prothera.teste.models.Funcionario;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -30,7 +29,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public Funcionario buscarFuncionarioPorId(int funcionarioId) {
-        if(funcionarioId < 1) return null;
+        if (funcionarioId < 1) return null;
         return repositorio.buscarFuncionario(f -> f.getId() == funcionarioId);
     }
 

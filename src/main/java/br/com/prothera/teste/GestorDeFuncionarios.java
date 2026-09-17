@@ -19,38 +19,42 @@ import java.util.stream.Collectors;
 @Component
 public class GestorDeFuncionarios {
     private final FuncionarioService funcionarioService;
-    private Map<String, List<Funcionario>> listaPorFuncao = null;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Map<String, List<Funcionario>> listaPorFuncao = null;
+
     public GestorDeFuncionarios(FuncionarioService funcionarioService) {
         this.funcionarioService = funcionarioService;
     }
 
-    public void adicionarFuncionario(Funcionario funcionario){
+    public void adicionarFuncionario(Funcionario funcionario) {
         funcionarioService.adicionarFuncionario(funcionario);
     }
+
     //3.2
-    public void removerFuncionarioJoao(){
+    public void removerFuncionarioJoao() {
         try {
             var idFuncionario = funcionarioService.buscarFuncionarios(
                     f -> f.getNome().contains("João")
             ).getFirst().getId();
             funcionarioService.removerFuncionario(idFuncionario);
-        }catch (Exception ex){
-            System.out.println("Falha ao remover funcionario, certeza que ele existe? "+ ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Falha ao remover funcionario, certeza que ele existe? " + ex.getMessage());
         }
 
 
-
     }
+
     //3.3
-    public void verTodosFuncionarios(){
+    public void verTodosFuncionarios() {
         System.out.println(funcionarioService.buscarFuncionarios());
     }
+
     //3.4
-    public void efetivarAumentoSalarialEmGrupo(){
+    public void efetivarAumentoSalarialEmGrupo() {
         efetivarAumentoSalarialEmGrupo(BigDecimal.TEN);
     }
-    public void efetivarAumentoSalarialEmGrupo(BigDecimal porcentagem){
+
+    public void efetivarAumentoSalarialEmGrupo(BigDecimal porcentagem) {
         for (Funcionario funcionario : funcionarioService.buscarFuncionarios()) {
             funcionario.setSalario(funcionario.getSalario().add(
                     funcionario.getSalario()
@@ -59,22 +63,25 @@ public class GestorDeFuncionarios {
             ));
         }
     }
+
     //3.5
-    public void agruparPorFuncao(){
+    public void agruparPorFuncao() {
         listaPorFuncao = funcionarioService.buscarFuncionarios()
                 .stream()
                 .collect(Collectors.groupingBy(f -> f.getFuncao()));
     }
+
     //3.6
-    public void imprimirAgrupadoFuncao(){
+    public void imprimirAgrupadoFuncao() {
         agruparPorFuncao();
-        listaPorFuncao.forEach((funcao, listaDeFuncionarios) ->{
-            System.out.println("=---> "+funcao+" <----=");
+        listaPorFuncao.forEach((funcao, listaDeFuncionarios) -> {
+            System.out.println("=---> " + funcao + " <----=");
             System.out.println(listaDeFuncionarios);
         });
     }
+
     //3.8
-    public void imprimirAniversariantes(){
+    public void imprimirAniversariantes() {
 
         var aniversariantes = funcionarioService.buscarFuncionarios(
                 f -> {
@@ -84,6 +91,7 @@ public class GestorDeFuncionarios {
         );
         System.out.println(aniversariantes);
     }
+
     //3.9
     public void imprimirFuncionarioMaisVelho() {
 
@@ -102,49 +110,50 @@ public class GestorDeFuncionarios {
                     dataNascimento,
                     LocalDate.now()
             );
-            System.out.println("""
-                Nome: %s
-                Idade: %d anos - %s
-                """.formatted(
-                    funcionario.getNome(),
-                    idade,
-                    funcionario.getDataNascimento()
-            ));
+            System.out.printf(
+                    """
+                            Nome: %s
+                            Idade: %d anos - %s
+                            %n""", funcionario.getNome(),
+            idade,
+            funcionario.getDataNascimento().format(formatter)
+    );
         }
     }
+
     //3.10
-    public void imprimirOrdemAlfa(){
+    public void imprimirOrdemAlfa() {
         var funcionarios = funcionarioService.buscarFuncionarios();
         funcionarios.sort(Comparator.comparing(Funcionario::getNome));
 
         System.out.println(funcionarios);
     }
+
     //3.11
-    public void imprimirFolhaSalarial(){
+    public void imprimirFolhaSalarial() {
         NumberFormat formatador = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
         BigDecimal totalSalarios = funcionarioService.buscarFuncionarios()
                 .stream().map(Funcionario::getSalario).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         System.out.println("Total da folha salarial: " + formatador.format(totalSalarios));
     }
+
     //3.12
-    public void imprimirSalariosMinimos(){
+    public void imprimirSalariosMinimos() {
         NumberFormat formatador = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
         funcionarioService.buscarFuncionarios()
-                .forEach(f->{
-                    System.out.println(
+                .forEach(f -> {
+                    System.out.printf(
                             """
-                                ===================
-                                Nome: %s , Função: %s,
-                                Salario: %s (%s vezes o salario mínimos)
-                                ===================
-                            """.formatted(
-                                    f.getNome(),
-                                    f.getFuncao(),
-                                    formatador.format(f.getSalario()),
-                                    f.getSalario().divide(BigDecimal.valueOf(1212), 2, RoundingMode.HALF_UP)
-                            )
-                    );
+                                        ===================
+                                        Nome: %s , Função: %s,
+                                        Salario: %s (%s vezes o salario mínimos)
+                                        ===================
+                                    %n""", f.getNome(),
+                    f.getFuncao(),
+                    formatador.format(f.getSalario()),
+                    f.getSalario().divide(BigDecimal.valueOf(1212), 2, RoundingMode.HALF_UP)
+            );
                 });
     }
 }

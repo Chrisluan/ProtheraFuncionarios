@@ -20,11 +20,11 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
     List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
 
-
     public FuncionarioRepositorioImpl() {
         mapper.registerModule(new JavaTimeModule());
         carregarFuncionarios();
     }
+
     @Override
     public void adicionarFuncionario(Funcionario funcionario) {
         this.funcionarios.add(funcionario);
@@ -46,6 +46,7 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
     public List<Funcionario> buscarTodosFuncionarios(Predicate<Funcionario> filtro) {
         return funcionarios.stream().filter(filtro).toList();
     }
+
     public List<Funcionario> buscarTodosFuncionarios() {
         return funcionarios;
     }
@@ -55,7 +56,8 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
         try {
             this.funcionarios = mapper.readValue(
                     arquivoData,
-                    new TypeReference<List<Funcionario>>() {}
+                    new TypeReference<List<Funcionario>>() {
+                    }
             );
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao carregar funcionários", ex);
@@ -64,9 +66,9 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
 
     @Override
     public void persistir() {
-        try{
+        try {
             mapper.writeValue(arquivoData, this.funcionarios);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Erro ao persistir: ", ex);
         }
 
