@@ -1,6 +1,8 @@
 package br.com.prothera.teste.models;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Funcionario extends Pessoa{
@@ -32,19 +34,22 @@ public class Funcionario extends Pessoa{
 
     @Override
     public String toString() {
+        DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        NumberFormat formatadorMoeda = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
         return String.format(Locale.of("pt", "BR"), """
-                ======================
-                Nome: %s
-                Data de Nascimento: %s
-                ----------------------
-                Função: %s
-                Salario: R$ %,.2f
-                ======================
+                   --------------------------------
+                   |> Pessoa
+                   |     Nome: %s
+                   |     Data de Nascimento: %s
+                   |> Funcionario
+                   |     Função: %s
+                   |     Salario: %s
+                   --------------------------------
                 """,
                 this.getNome(),
-                this.getDataNascimento(),
+                formatadorData.format(this.getDataNascimento()),
                 this.getFuncao(),
-                this.getSalario());
+                formatadorMoeda.format(this.getSalario()));
     }
 
 

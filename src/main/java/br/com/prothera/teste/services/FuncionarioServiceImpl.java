@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
 
@@ -30,6 +32,21 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public Funcionario buscarFuncionarioPorId(int funcionarioId) {
         if(funcionarioId < 1) return null;
         return repositorio.buscarFuncionario(f -> f.getId() == funcionarioId);
+    }
+
+    @Override
+    public List<Funcionario> buscarFuncionarios() {
+        return repositorio.buscarTodosFuncionarios();
+    }
+
+    @Override
+    public List<Funcionario> buscarFuncionarios(Predicate<Funcionario> filtro) {
+        return repositorio.buscarTodosFuncionarios(filtro);
+    }
+
+    @Override
+    public void salvarAlteracao() {
+        repositorio.persistir();
     }
 
 }

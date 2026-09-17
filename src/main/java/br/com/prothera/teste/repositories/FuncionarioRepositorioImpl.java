@@ -22,7 +22,6 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
 
 
     public FuncionarioRepositorioImpl() {
-        ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         carregarFuncionarios();
     }
@@ -41,6 +40,14 @@ public class FuncionarioRepositorioImpl implements FuncionarioRepositorio {
     @Override
     public Funcionario buscarFuncionario(Predicate<Funcionario> filtro) {
         return this.funcionarios.stream().filter(filtro).findFirst().orElse(null);
+    }
+
+    @Override
+    public List<Funcionario> buscarTodosFuncionarios(Predicate<Funcionario> filtro) {
+        return funcionarios.stream().filter(filtro).toList();
+    }
+    public List<Funcionario> buscarTodosFuncionarios() {
+        return funcionarios;
     }
 
     @Override
